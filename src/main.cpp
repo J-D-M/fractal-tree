@@ -1,28 +1,28 @@
+#include <SDL2/SDL.h>
 #include <cmath>
 #include <fstream>
 #include <iostream>
 #include <vector>
 
-const double pi{std::atan(1) * 4};
+const double pi{std::acos(-1)};
 
 #include "tree.hpp"
 #include "wrappers.hpp"
 
-// const int width{1024};
-// const int height{768};
-
-const int width{800};
-const int height{600};
+const int width{1024};
+const int height{768};
 
 auto
-draw_tree(sdl2::Renderer &rend, Tree &tree) -> void
+draw_tree(sdl2::Renderer &rend, std::shared_ptr<Tree> tree) -> void
 {
+	const auto tree_origin{tree->get_origin()};
+
 	const auto draw_branch = [&](auto b) {
-		rend.draw_line(tree.get_origin(), b.value().get_origin());
+		rend.draw_line(tree_origin, b.value()->get_origin());
 	};
 
-	if (auto l_branch{tree.left_branch()}) {
-		if (auto r_branch{tree.right_branch()}) {
+	if (auto l_branch{tree->left_branch()}) {
+		if (auto r_branch{tree->right_branch()}) {
 			draw_branch(l_branch);
 			draw_branch(r_branch);
 
@@ -49,8 +49,10 @@ main(int argc, char **argv) -> int
 	Renderer  rend(main_win);
 	Event     event;
 	SDL_Point base_coord{width / 2,
-	                     static_cast<int>(height - height * 0.8)};
-	Tree      tree(base_coord, height * 0.3, pi / 2, 5);
+	                     static_cast<int>(height - height * 0.05)};
+
+	auto tree{
+	    std::make_shared<Tree>(base_coord, height * 0.20, pi / 2, 16)};
 
 	rend.set_draw_color(color::black);
 	rend.clear();
@@ -64,6 +66,6 @@ main(int argc, char **argv) -> int
 		}
 
 		rend.present();
-		SDL_Delay(1000 / 30);
+		SDL_Delay(static_cast<int>(1000 / 30));
 	}
 }

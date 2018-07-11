@@ -13,8 +13,8 @@ class Tree
 	     const double    angle,
 	     const int       depth);
 
-	auto left_branch() const -> std::optional<Tree>;
-	auto right_branch() const -> std::optional<Tree>;
+	auto left_branch() const -> std::optional<std::shared_ptr<Tree>>;
+	auto right_branch() const -> std::optional<std::shared_ptr<Tree>>;
 	auto get_origin() const -> SDL_Point;
 
       private:

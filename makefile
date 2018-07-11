@@ -1,7 +1,7 @@
 # Compiler options
 CC       = clang++
 CFLAGS   = -Wall -Wextra -pedantic-errors -std=c++17
-LFLAGS   = -LSDL2 #-pthread
+LFLAGS   = -lSDL2 #-pthread
 
 # Directories
 SRCDIR   = ./src
